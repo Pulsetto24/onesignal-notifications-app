@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import OneSignal from "react-onesignal";
 
 const API_BASE_URL = "http://localhost:3000"; // Adjust this to your API base URL
@@ -30,7 +30,7 @@ export default function App() {
   const [time, setTime] = useState("");
 
   const handleLoginToOneSignal = async () => {
-    await OneSignal.init({
+    await OneSignal.initialize({
       appId: ONE_SIGNAL_APP_KEY,
       notifyButton: {
         enable: true,
@@ -74,7 +74,7 @@ export default function App() {
         <div className="flex justify-center gap-4 mb-4">
           <button
             className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg"
-            onClick={handleEnable}
+            onClick={handleLoginToOneSignal}
           >
             Login to OneSignal
           </button>
