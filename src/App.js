@@ -1,5 +1,5 @@
-import { useState } from "react";
-import OneSignal from "react-onesignal";
+import { use, useState } from "react";
+import OneSignal, { useOneSignalSetup } from "react-onesignal";
 
 const API_BASE_URL = "http://localhost:3000"; // Adjust this to your API base URL
 
@@ -9,7 +9,14 @@ const API_ENDPOINTS = {
   setNotificationTime: `${API_BASE_URL}/api/notifications/setNotificationTime`,
 };
 
-const ONE_SIGNAL_APP_KEY = "YOUR_ONESIGNAL_APP_ID"; // Replace with your OneSignal App ID
+const ONE_SIGNAL_APP_KEY = "API_KEY"; // Replace with your OneSignal App ID
+
+OneSignal.initialize(ONE_SIGNAL_APP_KEY, {
+  allowLocalhostAsSecureOrigin: true,
+  notifyButton: {
+    enable: false,
+  },
+});
 
 const callApi = async (endpoint, payload) => {
   try {
@@ -30,13 +37,6 @@ export default function App() {
   const [time, setTime] = useState("");
 
   const handleLoginToOneSignal = async () => {
-    await OneSignal.initialize({
-      appId: ONE_SIGNAL_APP_KEY,
-      notifyButton: {
-        enable: true,
-      },
-      allowLocalhostAsSecureOrigin: true,
-    });
     await OneSignal.setExternalUserId(userId);
   };
 
