@@ -5,7 +5,7 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-onesignal": "^1.0.0",
+    "react-onesignal": "3.2.2",
     "react-scripts": "5.0.1"
   },
   "scripts": {
@@ -27,8 +27,8 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.1",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24"
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.4.1"
   }
 }

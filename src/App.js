@@ -1,7 +1,7 @@
-import { use, useState } from "react";
-import OneSignal, { useOneSignalSetup } from "react-onesignal";
+import { useState, useEffect } from "react";
+import OneSignal from "react-onesignal";
 
-const API_BASE_URL = "http://localhost:3000"; // Adjust this to your API base URL
+const API_BASE_URL = "http://localhost:5001"; // Adjust this to your API base URL
 
 const API_ENDPOINTS = {
   enableNotifications: `${API_BASE_URL}/api/notifications/enableNotifications`,
@@ -9,14 +9,7 @@ const API_ENDPOINTS = {
   setNotificationTime: `${API_BASE_URL}/api/notifications/setNotificationTime`,
 };
 
-const ONE_SIGNAL_APP_KEY = "API_KEY"; // Replace with your OneSignal App ID
-
-OneSignal.initialize(ONE_SIGNAL_APP_KEY, {
-  allowLocalhostAsSecureOrigin: true,
-  notifyButton: {
-    enable: false,
-  },
-});
+const ONE_SIGNAL_APP_KEY = "YOUR_ONESIGNAL_APP_ID"; // Replace with your OneSignal App ID
 
 const callApi = async (endpoint, payload) => {
   try {
@@ -35,9 +28,23 @@ const callApi = async (endpoint, payload) => {
 export default function App() {
   const [userId, setUserId] = useState("");
   const [time, setTime] = useState("");
+  const [isInitialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    if (!isInitialized) {
+      OneSignal.init({
+        appId: ONE_SIGNAL_APP_KEY,
+        allowLocalhostAsSecureOrigin: true,
+        autoResubscribe: true,
+      }).then(() => {
+        OneSignal.Slidedown.promptPush();
+        setInitialized(true);
+      });
+    }
+  }, []);
 
   const handleLoginToOneSignal = async () => {
-    await OneSignal.setExternalUserId(userId);
+    await OneSignal.login(userId);
   };
 
   const handleEnable = () => {
@@ -51,7 +58,7 @@ export default function App() {
   const handleSetTime = () => {
     callApi(API_ENDPOINTS.setNotificationTime, {
       userId,
-      timeUtc: time + ":00",
+      timeUtc: time,
     });
   };
 
